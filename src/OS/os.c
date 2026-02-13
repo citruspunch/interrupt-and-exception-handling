@@ -140,7 +140,13 @@ int main(void) {
     // TODO: Initialize the timer using timer_init()
     // TODO: Enable interrupts using enable_irq()
     // TODO: Print a message indicating interrupts are enabled
-    
+    os_write("Starting OS...\n");
+    os_write("Initializing timer...\n");
+    timer_init();
+    os_write("Enabling interrupts...\n");
+    enable_irq();
+    os_write("Interrupts enabled. Starting main loop...\n");
+
     // Main loop: continuously print random numbers
     while (1) {
         unsigned int random_num = rand() % 1000;

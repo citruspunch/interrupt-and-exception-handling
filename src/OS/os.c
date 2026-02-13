@@ -118,8 +118,9 @@ void timer_init(void) {
 // 2. Acknowledge the interrupt to the controller (INTC_CONTROL = 0x1)
 // 3. Print "Tick\n" via UART
 void timer_irq_handler(void) {
-    // TODO: Implement timer interrupt handler
-    os_write("Timer interrupt handler not yet implemented\n");
+    PUT32(TISR, 0x2); // Clear timer interrupt flag
+    PUT32(INTC_CONTROL, 0x1); // Acknowledge interrupt to controller
+    os_write("Tick\n"); // Print "Tick"
 }
 
 // ============================================================================

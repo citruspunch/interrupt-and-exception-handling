@@ -50,7 +50,7 @@ data_handler:
 // 3. Restore all registers
 // 4. Return from interrupt using: subs pc, lr, #4
 irq_handler:
-    // TODO: Implement IRQ handler
+    
     b hang
 
 fiq_handler:
@@ -74,7 +74,9 @@ GET32:
 // 3. Write back to CPSR
 .globl enable_irq
 enable_irq:
-    // TODO: Implement enable_irq
+    mrs r1, cpsr   // Read current CPSR
+    bic r1, r1, #0x80 // Clear I-bit to enable IRQ
+    msr cpsr_c, r1 // Write back to CPSR
     bx lr
 
 // Stack space allocation

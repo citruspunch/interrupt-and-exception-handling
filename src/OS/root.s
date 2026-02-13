@@ -50,8 +50,10 @@ data_handler:
 // 3. Restore all registers
 // 4. Return from interrupt using: subs pc, lr, #4
 irq_handler:
-    
-    b hang
+    push {r0-r12, lr}
+    bl timer_irq_handler
+    pop {r0-r12, lr}
+    subs pc, lr, #4
 
 fiq_handler:
     b hang

@@ -89,7 +89,6 @@ void uart_putnum(unsigned int num) {
 // Timer Functions
 // ============================================================================
 
-// TODO: Implement timer initialization
 // This function should:
 // 1. Enable the timer clock (CM_PER_TIMER2_CLKCTRL = 0x2)
 // 2. Unmask IRQ 68 in the interrupt controller (INTC_MIR_CLEAR2)
@@ -112,7 +111,6 @@ void timer_init(void) {
     PUT32(TCLR, 0x3); // Start timer in auto-reload mode
 }
 
-// TODO: Implement timer interrupt handler
 // This function should:
 // 1. Clear the timer interrupt flag (TISR = 0x2)
 // 2. Acknowledge the interrupt to the controller (INTC_CONTROL = 0x1)
@@ -136,10 +134,6 @@ unsigned int rand(void) {
 }
 
 int main(void) {
-    // TODO: Print initialization message
-    // TODO: Initialize the timer using timer_init()
-    // TODO: Enable interrupts using enable_irq()
-    // TODO: Print a message indicating interrupts are enabled
     os_write("Starting OS...\n");
     os_write("Initializing timer...\n");
     timer_init();

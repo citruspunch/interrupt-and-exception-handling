@@ -101,8 +101,15 @@ void uart_putnum(unsigned int num) {
 // 8. Enable overflow interrupt (TIER = 0x2)
 // 9. Start timer in auto-reload mode (TCLR = 0x3)
 void timer_init(void) {
-    // TODO: Implement timer initialization
-    os_write("Timer initialization not yet implemented\n");
+    PUT32(CM_PER_TIMER2_CLKCTRL, 0x2); // Enable timer clock
+    PUT32(INTC_MIR_CLEAR2, 1 << (68 - 64)); // Unmask IRQ 68
+    PUT32(INTC_ILR68, 0x0); // Set interrupt priority
+    PUT32(TCLR, 0); // Stop timer
+    PUT32(TISR, 0x7); // Clear pending interrupts
+    PUT32(TLDR, 0xFE91CA00); // Load value for 2 seconds
+    PUT32(TCRR, 0xFE91CA00); // Set counter to load value
+    PUT32(TIER, 0x2); // Enable overflow interrupt
+    PUT32(TCLR, 0x3); // Start timer in auto-reload mode
 }
 
 // TODO: Implement timer interrupt handler

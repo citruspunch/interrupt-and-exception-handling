@@ -6,6 +6,7 @@
 // Exception Vector Table
 // Must be aligned to 32 bytes (0x20)
 .align 5
+_start:
 vector_table:
     b reset_handler      @ 0x00: Reset
     b undefined_handler  @ 0x04: Undefined Instruction
@@ -17,8 +18,16 @@ vector_table:
     b fiq_handler        @ 0x1C: FIQ (Fast Interrupt Request)
 
 reset_handler:
-    // Set up stack pointer
+    // Set up Supervisor (SVC) mode stack pointer
     ldr sp, =_stack_top
+
+    // Set up IRQ mode stack pointer (banked r13_irq)
+    mrs r1, cpsr
+    bic r2, r1, #0x1F
+    orr r2, r2, #0x12      @ IRQ mode
+    msr cpsr_c, r2
+    ldr sp, =_irq_stack_top
+    msr cpsr_c, r1         @ back to original mode
     
     // Set up exception vector table base address (VBAR - Vector Base Address Register)
     ldr r0, =vector_table
@@ -87,3 +96,8 @@ enable_irq:
 _stack_bottom:
     .skip 0x2000  @ 8KB stack space
 _stack_top:
+
+.align 4
+_irq_stack_bottom:
+    .skip 0x400   @ 1KB IRQ stack
+_irq_stack_top:
